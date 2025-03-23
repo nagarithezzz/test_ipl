@@ -1,127 +1,133 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Timer with Notification</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      margin: 0;
-      background-color: #f5f5f5;
-    }
-    
-    .container {
-      position: relative;
-      width: 80%;
-      max-width: 600px;
-      height: 300px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
-      padding: 20px;
-      background-color: white;
-      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    }
-    
-    .bottom-row {
-      position: absolute;
-      bottom: 20px;
-      left: 0;
-      right: 0;
-      display: flex;
-      justify-content: space-between;
-      padding: 0 20px;
-    }
-    
-    .timer {
-      font-size: 24px;
-      font-weight: bold;
-      color: #333;
-    }
-    
-    .action-btn {
-      padding: 10px 20px;
-      border: none;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background-color 0.3s;
-    }
-    
-    .notify-btn {
-      background-color: #4CAF50;
-      color: white;
-    }
-    
-    .book-btn {
-      background-color: #2196F3;
-      color: white;
-      display: none;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Timer with Notification</title>
+<style>
+body {
+  font-family: Arial, sans-serif;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  margin: 0;
+  background-color: #f5f5f5;
+}
+.container {
+  position: relative;
+  width: 80%;
+  max-width: 600px;
+  height: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 20px;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+.bottom-row {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+.timer {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+}
+.action-btn {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 4px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+.notify-btn {
+  background-color: #4CAF50;
+  color: white;
+}
+.book-btn {
+  background-color: #2196F3;
+  color: white;
+  display: none;
+}
+</style>
 </head>
 <body>
-  <div class="container">
-    <div class="bottom-row">
-      <div class="timer" id="timer">00:00:10</div>
-      <div>
-        <button class="action-btn notify-btn" id="notifyBtn">Notify Me</button>
-        <button class="action-btn book-btn" id="bookBtn" onclick="alert('Booked')">Book Now</button>
-      </div>
+<div class="container">
+  <div class="bottom-row">
+    <div class="timer" id="timer">00:00:10</div>
+    <div>
+      <button class="action-btn notify-btn" id="notifyBtn">Notify Me</button>
+      <button class="action-btn book-btn" id="bookBtn">Book Now</button>
     </div>
   </div>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Set the timer (for demo purposes, set to 10 seconds)
-      let hours = 0;
-      let minutes = 0;
-      let seconds = 10;
+</div>
+<script>
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function() {
+  // Set the timer (for demo purposes, set to 10 seconds)
+  let hours = 0;
+  let minutes = 0;
+  let seconds = 10;
+  
+  const timerElement = document.getElementById('timer');
+  const notifyBtn = document.getElementById('notifyBtn');
+  const bookBtn = document.getElementById('bookBtn');
+  
+  // Add onclick handler for notify button
+  notifyBtn.addEventListener('click', function() {
+    alert('You will be notified when the timer ends');
+  });
+  
+  // Add onclick handler for book button
+  bookBtn.addEventListener('click', function() {
+    alert('Booked')
+  });
+  
+  function updateTimer() {
+    // Format the time with leading zeros
+    const formattedHours = String(hours).padStart(2, '0');
+    const formattedMinutes = String(minutes).padStart(2, '0');
+    const formattedSeconds = String(seconds).padStart(2, '0');
+    
+    // Update the timer display
+    timerElement.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
+    
+    // Check if timer has reached zero
+    if (hours === 0 && minutes === 0 && seconds === 0) {
+      // Show a notification
       
-      const timerElement = document.getElementById('timer');
-      const notifyBtn = document.getElementById('notifyBtn');
-      const bookBtn = document.getElementById('bookBtn');
-      
-      function updateTimer() {
-        // Format the time with leading zeros
-        const formattedHours = String(hours).padStart(2, '0');
-        const formattedMinutes = String(minutes).padStart(2, '0');
-        const formattedSeconds = String(seconds).padStart(2, '0');
-        
-        // Update the timer display
-        timerElement.textContent = `${formattedHours}:${formattedMinutes}:${formattedSeconds}`;
-        
-        // Check if timer has reached zero
-        if (hours === 0 && minutes === 0 && seconds === 0) {
-          // Switch buttons
-          notifyBtn.style.display = 'none';
-          bookBtn.style.display = 'block';
-          return; // Stop the timer
-        }
-        
-        // Decrement the timer
-        if (seconds > 0) {
-          seconds--;
-        } else if (minutes > 0) {
-          minutes--;
-          seconds = 59;
-        } else if (hours > 0) {
-          hours--;
-          minutes = 59;
-          seconds = 59;
-        }
-        
-        // Continue the timer
-        setTimeout(updateTimer, 1000);
-      }
-      
-      // Start the timer
-      updateTimer();
-    });
-  </script>
+      // Switch buttons
+      notifyBtn.style.display = 'none';
+      bookBtn.style.display = 'block';
+      return; // Stop the timer
+    }
+    
+    // Decrement the timer
+    if (seconds > 0) {
+      seconds--;
+    } else if (minutes > 0) {
+      minutes--;
+      seconds = 59;
+    } else if (hours > 0) {
+      hours--;
+      minutes = 59;
+      seconds = 59;
+    }
+    
+    // Continue the timer
+    setTimeout(updateTimer, 1000);
+  }
+  
+  // Start the timer
+  updateTimer();
+});
+</script>
 </body>
 </html>
