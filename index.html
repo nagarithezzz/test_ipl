@@ -101,11 +101,10 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check if timer has reached zero
     if (hours === 0 && minutes === 0 && seconds === 0) {
-      // Show a notification
-      
-      // Switch buttons
-      notifyBtn.style.display = 'none';
-      bookBtn.style.display = 'block';
+      setTimeout(function(){
+        notifyBtn.style.display = 'none';
+        bookBtn.style.display = 'block';
+      }, 1500)
       return; // Stop the timer
     }
     
