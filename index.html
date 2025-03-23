@@ -54,7 +54,6 @@ body {
 .book-btn {
   background-color: #2196F3;
   color: white;
-  display: none;
 }
 .notification {
   position: fixed;
@@ -77,9 +76,8 @@ body {
 <div class="container">
   <div class="bottom-row">
     <div class="timer" id="timer">00:00:10</div>
-    <div>
+    <div id="button-container">
       <button class="action-btn notify-btn" id="notifyBtn">Notify Me</button>
-      <button class="action-btn book-btn" id="bookBtn">Book Now</button>
     </div>
   </div>
 </div>
@@ -92,20 +90,33 @@ document.addEventListener('DOMContentLoaded', function() {
   let seconds = 10;
   const timerElement = document.getElementById('timer');
   const notifyBtn = document.getElementById('notifyBtn');
-  const bookBtn = document.getElementById('bookBtn');
+  const buttonContainer = document.getElementById('button-container');
   const notification = document.getElementById('notification');
   
-  
-  // Add onclick handler for book button
-  bookBtn.addEventListener('click', function() {
-    // Show notification box instead of alert
-    notification.style.display = 'block';
+  function createBookButton() {
+    // Remove the notify button
+    notifyBtn.remove();
     
-    // Hide notification after 3 seconds
-    setTimeout(function() {
-      notification.style.display = 'none';
-    }, 3000);
-  });
+    // Create a new Book Now button
+    const bookBtn = document.createElement('button');
+    bookBtn.className = 'action-btn book-btn';
+    bookBtn.id = 'bookBtn';
+    bookBtn.textContent = 'Book Now';
+    
+    // Add click event listener to the new button
+    bookBtn.addEventListener('click', function() {
+      // Show notification box
+      notification.style.display = 'block';
+      
+      // Hide notification after 3 seconds
+      setTimeout(function() {
+        notification.style.display = 'none';
+      }, 3000);
+    });
+    
+    // Add the button to the container
+    buttonContainer.appendChild(bookBtn);
+  }
   
   function updateTimer() {
     // Format the time with leading zeros
@@ -118,9 +129,9 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // Check if timer has reached zero
     if (hours === 0 && minutes === 0 && seconds === 0) {
-      setTimeout(function(){
-        notifyBtn.style.display = 'none';
-        bookBtn.style.display = 'block';
+      // Wait for 1.5 seconds then create and add the Book Now button
+      setTimeout(function() {
+        createBookButton();
       }, 1500);
       return; // Stop the timer
     }
