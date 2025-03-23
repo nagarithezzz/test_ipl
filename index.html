@@ -56,9 +56,24 @@ body {
   color: white;
   display: none;
 }
+.notification {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4CAF50;
+  color: white;
+  padding: 15px 30px;
+  border-radius: 4px;
+  font-weight: bold;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  display: none;
+}
 </style>
 </head>
 <body>
+<div class="notification" id="notification">Booked</div>
 <div class="container">
   <div class="bottom-row">
     <div class="timer" id="timer">00:00:10</div>
@@ -75,10 +90,10 @@ document.addEventListener('DOMContentLoaded', function() {
   let hours = 0;
   let minutes = 0;
   let seconds = 10;
-  
   const timerElement = document.getElementById('timer');
   const notifyBtn = document.getElementById('notifyBtn');
   const bookBtn = document.getElementById('bookBtn');
+  const notification = document.getElementById('notification');
   
   // Add onclick handler for notify button
   notifyBtn.addEventListener('click', function() {
@@ -87,7 +102,13 @@ document.addEventListener('DOMContentLoaded', function() {
   
   // Add onclick handler for book button
   bookBtn.addEventListener('click', function() {
-    alert('Booked')
+    // Show notification box instead of alert
+    notification.style.display = 'block';
+    
+    // Hide notification after 3 seconds
+    setTimeout(function() {
+      notification.style.display = 'none';
+    }, 3000);
   });
   
   function updateTimer() {
@@ -104,7 +125,7 @@ document.addEventListener('DOMContentLoaded', function() {
       setTimeout(function(){
         notifyBtn.style.display = 'none';
         bookBtn.style.display = 'block';
-      }, 1500)
+      }, 1500);
       return; // Stop the timer
     }
     
